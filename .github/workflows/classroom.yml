@@ -1,0 +1,33 @@
+name: GitHub Classroom Workflow
+
+on: [push]
+
+permissions:
+  checks: write
+  actions: read
+  contents: read
+
+jobs:
+  build:
+    name: Autograding
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: cachix/install-nix-action@v13
+        with:
+          nix_path: nixpkgs=channel:nixos-22.11
+
+      - name: Install dependencies
+        run: |
+          out=$(nix-build --no-out-link -E '
+            { pkgs ? import <nixpkgs> {} }: pkgs.mkShell {
+              buildInputs = (import ./replit.nix { inherit pkgs; }).deps;
+            }
+          ')
+          # Workaround for education/autograding not passing down our
+          # environment variables (so no $GITHUB_ENV).
+          # This is very stupid, but we really don't have a choice.
+          # See https://github.com/education/autograding/issues/19.
+          sed -n 's/^declare -x \(PATH=.*\|NIX_.*\)/&/p' $out > /tmp/github-env
+      - uses: education/autograding@v1

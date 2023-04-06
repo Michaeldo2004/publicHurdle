@@ -1,0 +1,74 @@
+{
+  "tests": [
+    {
+      "name": "BoardColors Unit Tests",
+      "setup": "bash -ac '. /tmp/github-env && make clean && make build'",
+      "run": "bash -ac '. /tmp/github-env && make test_boardcolors'",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 22
+    },
+    {
+      "name": "HurdleWords Unit Tests",
+      "setup": "bash -ac '. /tmp/github-env && make build'",
+      "run": "bash -ac '. /tmp/github-env && make test_hurdlewords'",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 14
+    },
+    {
+      "name": "ErrorMessage Unit Tests",
+      "setup": "bash -ac '. /tmp/github-env && make build'",
+      "run": "bash -ac '. /tmp/github-env && make test_errormessage'",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 7
+    },
+    {
+      "name": "GameStatus Unit Tests",
+      "setup": "bash -ac '. /tmp/github-env && make build'",
+      "run": "bash -ac '. /tmp/github-env && make test_gamestatus'",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 7
+    },
+    {
+      "name": "GuessedWords Unit Tests",
+      "setup": "bash -ac '. /tmp/github-env && make build'",
+      "run": "bash -ac '. /tmp/github-env && make test_guessedwords'",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 20
+    },
+    {
+      "name": "HurdleGame Unit Tests",
+      "setup": "bash -ac '. /tmp/github-env && make build'",
+      "run": "bash -ac '. /tmp/github-env && make test'",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 5
+    },
+    {
+      "name": "Stylecheck",
+      "setup": "bash -ac '. /tmp/github-env && make build'",
+      "run": "bash -ac '. /tmp/github-env && make stylecheck'",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 20
+    }
+  ]
+}
