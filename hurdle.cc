@@ -13,31 +13,31 @@ void HurdleGame::NewHurdle() {
   JsonFromHurdleState();
 }
 void HurdleGame::LetterEntered(char key) {
-  hurdle_state_.GetError().clear();
   hurdle_state_.SetError("");
   if (hurdle_state_.isActive()) {
     if (hurdle_state_.GetGuesses().size() ==
-        0) {  // empty vector -> adds something
-      hurdle_state_.AddGuess("");
+        0) {                       // empty vector -> adds something
+      hurdle_state_.AddGuess("");  // YOU WANT TO PUSH BACK THE KEY INTO THE
+                                   // VECTOR NOT AN EMPTY STRING
     }
-    if (hurdle_state_.GetGuesses()
-            .at(hurdle_state_.GetGuesses().size() - 1)
-            .length() < 5) {  // if guess is less then 5 then adds letter in
-      hurdle_state_.GetGuesses().at(hurdle_state_.GetGuesses().size() - 1) +=
-          key;
-    } else {
-      hurdle_state_.SetError("Cannot enter letter!");
+    int index = hurdle_state_.GetGuesses().size() - 1;
+    std::string current_word = hurdle_state_.GetGuesses().at(index);
+    if (hurdle_state_.GetGuesses().at(index).size() <
+        5) {  // if guess is less then 5 then adds letter in
+      hurdle_state_.GetGuesses()[index] = current_word + key;
     }
   }
 }
 
-void HurdleGame::WordSubmitted() {  // a
-  hurdle_state_.GetError().clear();
+void HurdleGame::WordSubmitted() {
   hurdle_state_.SetError("");
-  if (hurdle_state_.isActive()) {  // b
+  if (!hurdle_state_.isActive()) {
+    return;
+  } else {  // YOU DONT NEED TO DO THIS ELSE STATEMENT AT ALL!! delete lines 39
+            // - 62
     std::string color = "";
     int index = hurdle_state_.GetGuesses().size() - 1;
-    if (hurdle_state_.GetGuesses().at(index).length() == 5) {
+    if (hurdle_state_.GetGuesses().at(index).size() == 5) {
       if (hurdlewords_.IsGuessValid(hurdle_state_.GetGuesses().at(
               index))) {  // valid guess -> adds colors
         color = hurdle_state_.ColorCheck(hurdle_state_.GetGuesses().at(index),
@@ -58,24 +58,45 @@ void HurdleGame::WordSubmitted() {  // a
         return;
       }
     } else {
+      /* example of what i did
+
+
+ if (hurdlewords_.IsGuessValid(hurdle_state_.GetKey())) { // THE "key" is a
+ string where i was tracking the current guess
+
+  hurdle_state_.Status();
+  hurdle_state_.Colors();
+  hurdle_state_.ClearKey();
+  hurdle_state_.SetErrorMessage("");
+ } else {
+  hurdle_state_.SetErrorMessage("Your word is not valid.");
+ }
+
+
+
+
+   */
       hurdle_state_.SetError("Needs more letters!");
       return;
     }
-  }  // b
-}  // a
+  }
+}
 void HurdleGame::LetterDeleted() {
-  hurdle_state_.GetError().clear();
+  // YOU CAN SIMPLIFY THIS
+  // 1) Do a conditional to check the current word. if the word size is 0 then
+  // give error message else set the error message to an empty string, and then
+  // use the .pop_back() to remove a character from that string
   hurdle_state_.SetError("");
   if (hurdle_state_.isActive()) {
     if (hurdle_state_.GetGuesses()
-                .at(hurdle_state_.GetGuesses().size() - 1)
-                .length() >= 1 &&
-        hurdle_state_.GetGuesses().size() < 1) {
-      std::string lastword =
-          hurdle_state_.GetGuesses().at(hurdle_state_.GetGuesses().size() - 1);
-      hurdle_state_.SetGuess(lastword.substr(0, lastword.length() - 1));
-    } else {
+            .at(hurdle_state_.GetGuesses().size() - 1)
+            .size() == 0) {
       hurdle_state_.SetError("There are no words to delete.");
+    } else {
+      hurdle_state_.SetError("");
+      hurdle_state_.GetGuesses()
+          .at(hurdle_state_.GetGuesses().size() - 1)
+          .pop_back();
     }
   }
 }
