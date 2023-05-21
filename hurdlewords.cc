@@ -35,7 +35,7 @@ bool HurdleWords::IsGuessValid(const std::string& word) const {
   }
 }
 
-const std::string &HurdleWords::GetRandomHurdle() const{
+const std::string& HurdleWords::GetRandomHurdle() const {
   int i = rand() % valid_hurdles_.size();
   return valid_hurdles_.at(i);
 }

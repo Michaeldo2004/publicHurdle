@@ -33,10 +33,10 @@ class HurdleState {
   std::string ColorCheck(const std::string& guess, const std::string& answer);
 
  private:
-  std::string secret_hurdle_ = "answer";
+  std::string secret_hurdle_;
   std::vector<std::string> guesses_;
   std::string current_guess_;
-  std::string game_status_ = "active";
+  std::string game_status_;
   std::vector<std::string> colors_;
   std::string error_;
 };

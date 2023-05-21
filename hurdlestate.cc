@@ -1,11 +1,14 @@
 #include "hurdlestate.h"
 
+const std::string defaultAnswers = "answer";
+const std::string defaultStatus = "active";
 HurdleState::HurdleState(const std::string& hurdle) {
   secret_hurdle_ = hurdle;
   guesses_ = {};
   current_guess_ = "";
   colors_ = {};
   error_ = "";
+  game_status_ = defaultStatus;
 }
 void HurdleState::AddColor(const std::string& color) {
   colors_.push_back(color);
