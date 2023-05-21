@@ -13,11 +13,11 @@ void HurdleGame::NewHurdle() {
   JsonFromHurdleState();
 }
 void HurdleGame::LetterEntered(char key) {
-  if(hurdle_state_.isActive()){
-    if(hurdle_state_.GetGuesses().size() == 0) {
+  if (hurdle_state_.isActive()) {
+    if (hurdle_state_.GetGuesses().size() == 0) {
       hurdle_state_.AddGuess("");
     }
-    if(hurdle_state_.GetGuess().length() <5){
+    if (hurdle_state_.GetGuess().length() < 5) {
       hurdle_state_.GetGuess() += key;
     }
   }
@@ -57,15 +57,14 @@ void HurdleGame::WordSubmitted() {
 }
 void HurdleGame::LetterDeleted() {
   hurdle_state_.SetError("");
-  if (hurdle_state_.isActive()){
-  if (hurdle_state_.GetGuess().length() >= 1) {
-    hurdle_state_.SetGuess(hurdle_state_.GetGuess().substr(
-        0, hurdle_state_.GetGuess().length() - 1));
-  } else {
-    hurdle_state_.SetError("There are no words to delete.");
+  if (hurdle_state_.isActive()) {
+    if (hurdle_state_.GetGuess().length() >= 1) {
+      hurdle_state_.SetGuess(hurdle_state_.GetGuess().substr(
+          0, hurdle_state_.GetGuess().length() - 1));
+    } else {
+      hurdle_state_.SetError("There are no words to delete.");
+    }
   }
-}
-  JsonFromHurdleState();
 }
 
 crow::json::wvalue HurdleGame::JsonFromHurdleState() {

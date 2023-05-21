@@ -10,10 +10,7 @@
 
 class HurdleState {
  public:
-  //=================== YOUR CODE HERE ===================
-  // TODO: Add the constructor(s), accessors, mutators,
-  // and any other member function you may need here.
-  //======================================================
+
   HurdleState(const std::string& secret_hurdle);
 
   std::string GetHurdle() const { return secret_hurdle_; }
@@ -28,6 +25,7 @@ class HurdleState {
   void SetColor(const std::vector<std::string>& color) { colors_ = color; }
   void SetStatus(const std::string& status) { game_status_ = status; }
   void SetError(const std::string& error) { error_ = error; }
+
   bool isActive() { return game_status_ == "active"; }
 
   void AddColor(const std::string& color) { colors_.push_back(color); }
