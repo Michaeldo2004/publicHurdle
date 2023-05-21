@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <algorithm>
 
 #include "hurdlewords.h"
 
@@ -29,7 +30,7 @@ class HurdleState {
   bool isActive() { return game_status_ == "active"; }
   void AddColor(const std::string& color);
   void AddGuess(const std::string& guess);
-
+  std::string ColorCheck(const std::string& guess, const std::string& answer);
 
  private:
   std::string secret_hurdle_;
