@@ -1,37 +1,74 @@
 #include "hurdle.h"
 
-// ========================= YOUR CODE HERE =========================
-// This implementation file is where you should implement the member
-// functions declared in the header, only if you didn't implement
-// them inline in the header.
-//
-// Remember to specify the name of the class with :: in this format:
-//     <return type> MyClassName::MyFunction() {
-//        ...
-//     }
-// to tell the compiler that each function belongs to the HurdleGame class.
-// ===================================================================
+using std::string;
+
+void HurdleGame::NewHurdle() {
+  std::vector<std::string> empty;
+  hurdle_state_.SetHurdle(hurdlewords_.GetRandomHurdle());
+  hurdle_state_.SetGuess("");
+  hurdle_state_.SetGuesses(empty);
+  hurdle_state_.SetColor(empty);
+  hurdle_state_.SetStatus("active");
+  hurdle_state_.SetError("");
+}
+void HurdleGame::LetterEntered(char key) {
+  if(hurdle_state_.isActive()){
+    if(hurdle_state_.GetGuesses().size() == 0) {
+      hurdle_state_.AddGuess("");
+    }
+    if(hurdle_state_.GetGuess().size() <5){
+      hurdle_state_.GetGuess() += key;
+    }
+  }
+}
+
+void HurdleGame::WordSubmitted() {
+  std::string color = "";
+  if (hurdle_state_.GetGuess().size() == 5) {
+    if (hurdlewords_.IsGuessValid(hurdle_state_.GetGuess())) {
+      hurdle_state_.AddGuess(hurdle_state_.GetGuess());
+      for (int i = 0; i < 5; i++) {
+        if (hurdle_state_.GetGuess().at(i) == hurdle_state_.GetHurdle().at(i)) {
+          color += "G";
+        } else if (std::find(hurdle_state_.GetHurdle().begin(),
+                             hurdle_state_.GetHurdle().end(),
+                             hurdle_state_.GetGuess().at(i)) ==
+                   hurdle_state_.GetHurdle().end()) {
+          color += "B";
+        } else {
+          color += "Y";
+        }
+        hurdle_state_.AddColor(color);
+      }
+    } else {
+      hurdle_state_.SetError("Invalid Word.");
+    }
+  } else {
+    hurdle_state_.SetError("Needs more letters!");
+  }
+
+  if (color == "GGGGG") {
+    hurdle_state_.SetStatus("win");
+  } else if (hurdle_state_.GetGuesses().size() >= 5 ||
+             hurdle_state_.GetGuesses().size() < 0) {
+    hurdle_state_.SetStatus("lose");
+  }
+}
+void HurdleGame::LetterDeleted() {
+  if (hurdle_state_.GetGuess().size() >= 1) {
+    hurdle_state_.SetGuess(hurdle_state_.GetGuess().substr(
+        0, hurdle_state_.GetGuess().length() - 1));
+  }
+}
 
 crow::json::wvalue HurdleGame::JsonFromHurdleState() {
-  // The JSON object to return to the Hurdle Frontend.
   crow::json::wvalue hurdle_state_json({});
 
-  // ===================== YOUR CODE HERE =====================
-  // Fill the hurdle_state_json with the data expected by the
-  // Hurdle frontend. The frontend expects the following keys:
-  //   1. "answer"
-  //   2. "boardColors"
-  //   3. "guessedWords"
-  //   4. "gameStatus"
-  //   5. "errorMessage"
-  //   6. [OPTIONAL] "letterColors"
-  // See the "JSON Response" section of tinyurl.com/cpsc121-s23-hurdle
-  //
-  // You can set the key in the JSON to a value like so:
-  //             hurdle_state_json[<key>] = <value>
-  //
-  // See below for an example to set the "answer" key:
-  hurdle_state_json["answer"] = "titan";  // Replace this!
-  // ==========================================================
+  hurdle_state_json["answer"] = hurdle_state_.GetHurdle();
+  hurdle_state_json["boardColors"] = hurdle_state_.GetColor();
+  hurdle_state_json["guessedWords"] = hurdle_state_.GetGuesses();
+  hurdle_state_json["gameStatus"] = hurdle_state_.GetStatus();
+  hurdle_state_json["errorMessage"] = hurdle_state_.GetError();
+
   return hurdle_state_json;
 }

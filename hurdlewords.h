@@ -8,7 +8,7 @@
 class HurdleWords {
  public:
   HurdleWords(const std::string &valid_hurdles_filename,
-             const std::string &valid_guesses_filename);
+              const std::string &valid_guesses_filename);
 
   // Returns true if the given word is a valid guess
   // according to the words in this class.

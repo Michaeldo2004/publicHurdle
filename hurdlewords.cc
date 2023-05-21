@@ -6,7 +6,7 @@
 #include <string>
 
 HurdleWords::HurdleWords(const std::string& valid_hurdles_filename,
-                       const std::string& valid_guesses_filename) {
+                         const std::string& valid_guesses_filename) {
   // Read from the file containing all valid secret
   // hurdles, and insert them into the valid_hurdles_ vector.
   std::ifstream hurdles_file(valid_hurdles_filename);
@@ -30,14 +30,15 @@ bool HurdleWords::IsGuessValid(const std::string& word) const {
   // TODO: Return true if the given `word` is considered
   // a valid guess. If the guess is invalid, return false.
   //======================================================
+  if (std::find(valid_guesses_.begin(), valid_guesses_.end(), word) !=
+      valid_guesses_.end()) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
-const std::string& HurdleWords::GetRandomHurdle() const {
-  //=================== YOUR CODE HERE ===================
-  // TODO: Select and return a random Hurdle from the
-  // list of valid Hurdles stored in the valid_hurdles_
-  // vector.
-  // Hint: we suggest using the rand() function to
-  // generate a random number.
-  //======================================================
+const std::string& Dictionary::GetRandomHurdle() const {
+  int i = rand() % valid_hurdles_.size();
+  return valid_hurdles_.at(i);
 }
