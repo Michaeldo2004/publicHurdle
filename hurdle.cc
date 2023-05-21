@@ -15,9 +15,6 @@ void HurdleGame::NewHurdle() {
 void HurdleGame::LetterEntered(char key) {
   hurdle_state_.SetError("");
   if (hurdle_state_.isActive()) {
-    if (hurdle_state_.GetGuesses().size() == 0) {
-      hurdle_state_.AddGuess("");
-    }
     if (hurdle_state_.GetGuess().length() < 5) {
       hurdle_state_.GetGuess() += key;
       hurdle_state_.SetError("");
