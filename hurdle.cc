@@ -30,7 +30,6 @@ void HurdleGame::WordSubmitted() {
   if (hurdle_state_.GetGuess().size() == 5) {
     if (hurdlewords_.IsGuessValid(hurdle_state_.GetGuess())) {
       hurdle_state_.SetError("");
-      hurdle_state_.AddGuess(hurdle_state_.GetGuess());
       for (int i = 0; i < 5; i++) {
         if (hurdle_state_.GetGuess().at(i) == hurdle_state_.GetHurdle().at(i)) {
           color += "G";
@@ -42,8 +41,10 @@ void HurdleGame::WordSubmitted() {
         } else {
           color += "Y";
         }
-        hurdle_state_.AddColor(color);
       }
+      hurdle_state_.AddColor(color);
+      hurdle_state_.AddGuess(hurdle_state_.GetGuess());
+
     } else {
       hurdle_state_.SetError("Invalid Word.");
       return;
@@ -51,13 +52,6 @@ void HurdleGame::WordSubmitted() {
   } else {
     hurdle_state_.SetError("Needs more letters!");
     return;
-  }
-
-  if (color == "GGGGG") {
-    hurdle_state_.SetStatus("win");
-  } else if (hurdle_state_.GetGuesses().size() >= 5 ||
-             hurdle_state_.GetGuesses().size() < 0) {
-    hurdle_state_.SetStatus("lose");
   }
 }
 void HurdleGame::LetterDeleted() {

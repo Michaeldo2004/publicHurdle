@@ -27,9 +27,8 @@ class HurdleState {
   void SetError(const std::string& error) { error_ = error; }
 
   bool isActive() { return game_status_ == "active"; }
-
-  void AddColor(const std::string& color) { colors_.push_back(color); }
-  void AddGuess(const std::string& guess) { guesses_.push_back(guess); }
+  void AddColor(const std::string& color);
+  void AddGuess(const std::string& guess);
 
 
  private:
