@@ -13,8 +13,8 @@ void HurdleGame::NewHurdle() {
   JsonFromHurdleState();
 }
 void HurdleGame::LetterEntered(char key) {
-  hurdle_state_.SetError("");
   if (hurdle_state_.isActive()) {
+    hurdle_state_.SetError("");
     if (hurdle_state_.GetGuess().length() < 5) {
       hurdle_state_.GetGuess() += key;
       hurdle_state_.SetError("");
@@ -25,38 +25,41 @@ void HurdleGame::LetterEntered(char key) {
 }
 
 void HurdleGame::WordSubmitted() {
-  std::string color = "";
-  hurdle_state_.SetError("");
-  if (hurdle_state_.GetGuess().size() == 5) {
-    if (hurdlewords_.IsGuessValid(hurdle_state_.GetGuess())) {
-      hurdle_state_.SetError("");
-      for (int i = 0; i < 5; i++) {
-        if (hurdle_state_.GetGuess().at(i) == hurdle_state_.GetHurdle().at(i)) {
-          color += "G";
-        } else if (std::find(hurdle_state_.GetHurdle().begin(),
-                             hurdle_state_.GetHurdle().end(),
-                             hurdle_state_.GetGuess().at(i)) ==
-                   hurdle_state_.GetHurdle().end()) {
-          color += "B";
-        } else {
-          color += "Y";
+  if (hurdle_state_.isActive()) {
+    hurdle_state_.SetError("");
+    std::string color = "";
+    if (hurdle_state_.GetGuess().size() == 5) {
+      if (hurdlewords_.IsGuessValid(hurdle_state_.GetGuess())) {
+        hurdle_state_.SetError("");
+        for (int i = 0; i < 5; i++) {
+          if (hurdle_state_.GetGuess().at(i) ==
+              hurdle_state_.GetHurdle().at(i)) {
+            color += "G";
+          } else if (std::find(hurdle_state_.GetHurdle().begin(),
+                               hurdle_state_.GetHurdle().end(),
+                               hurdle_state_.GetGuess().at(i)) ==
+                     hurdle_state_.GetHurdle().end()) {
+            color += "B";
+          } else {
+            color += "Y";
+          }
         }
-      }
-      hurdle_state_.AddColor(color);
-      hurdle_state_.AddGuess(hurdle_state_.GetGuess());
+        hurdle_state_.AddColor(color);
+        hurdle_state_.AddGuess(hurdle_state_.GetGuess());
 
+      } else {
+        hurdle_state_.SetError("Invalid Word.");
+        return;
+      }
     } else {
-      hurdle_state_.SetError("Invalid Word.");
+      hurdle_state_.SetError("Needs more letters!");
       return;
     }
-  } else {
-    hurdle_state_.SetError("Needs more letters!");
-    return;
   }
 }
 void HurdleGame::LetterDeleted() {
-  hurdle_state_.SetError("");
   if (hurdle_state_.isActive()) {
+    hurdle_state_.SetError("");
     if (hurdle_state_.GetGuess().length() >= 1) {
       hurdle_state_.SetGuess(hurdle_state_.GetGuess().substr(
           0, hurdle_state_.GetGuess().length() - 1));
