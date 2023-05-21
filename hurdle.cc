@@ -14,13 +14,12 @@ void HurdleGame::NewHurdle() {
 }
 void HurdleGame::LetterEntered(char key) {
   if (hurdle_state_.isActive()) {
-    hurdle_state_.SetError("");
-    if (hurdle_state_.GetGuesses().size() == 0) {
+    if (hurdle_state_.GetGuesses().size() == 0) { //empty vector -> adds something
       hurdle_state_.AddGuess("");
     }
     if (hurdle_state_.GetGuesses()
             .at(hurdle_state_.GetGuesses().size() - 1)
-            .length() < 5) {
+            .length() < 5) {  //if guess is less then 5 then adds letter in
       hurdle_state_.GetGuesses().at(hurdle_state_.GetGuesses().size() - 1) +=
           key;
     } else {
@@ -31,7 +30,6 @@ void HurdleGame::LetterEntered(char key) {
 
 void HurdleGame::WordSubmitted() {
   if (hurdle_state_.isActive()) {
-    hurdle_state_.SetError("");
     std::string color = "";
     if (hurdle_state_.GetGuesses()
             .at(hurdle_state_.GetGuesses().size() - 1)
@@ -53,15 +51,15 @@ void HurdleGame::WordSubmitted() {
             color += "Y";
           }
         }
-        hurdle_state_.AddColor(color);
-        if (color == "GGGGG") {
+        hurdle_state_.AddColor(color); //adds color to colorboard
+        if (color == "GGGGG") {  //winchecker
           hurdle_state_.SetStatus("win");
         }
-        if (hurdle_state_.GetGuesses().size() >= 5 &&
+        if (hurdle_state_.GetGuesses().size() >= 5 &&  //lose checker
             hurdle_state_.GetStatus() != "win") {
           hurdle_state_.SetStatus("lose");
         } else {
-          hurdle_state_.AddGuess("");
+          hurdle_state_.AddGuess("");  //adds new guess if not 5 guesses yet
         }
       } else {
         hurdle_state_.SetError("Invalid Word.");
@@ -74,12 +72,10 @@ void HurdleGame::WordSubmitted() {
   }
 }
 void HurdleGame::LetterDeleted() {
-  hurdle_state_.SetError("");
   if (hurdle_state_.isActive()) {
     if (hurdle_state_.GetGuess().length() >= 1) {
       hurdle_state_.SetGuess(hurdle_state_.GetGuess().substr(
           0, hurdle_state_.GetGuess().length() - 1));
-      hurdle_state_.SetError("");
     } else {
       hurdle_state_.SetError("There are no words to delete.");
     }
