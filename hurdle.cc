@@ -30,6 +30,7 @@ void HurdleGame::LetterEntered(char key) {
 
 void HurdleGame::WordSubmitted() {
   if (hurdle_state_.isActive()) {
+    hurdle_state_.SetError("");
     std::string color = "";
     if (hurdle_state_.GetGuesses()
             .at(hurdle_state_.GetGuesses().size() - 1)
@@ -55,7 +56,7 @@ void HurdleGame::WordSubmitted() {
         if (color == "GGGGG") {  //winchecker
           hurdle_state_.SetStatus("win");
         }
-        if (hurdle_state_.GetGuesses().size() >= 5 &&  //lose checker
+        if (hurdle_state_.GetGuesses().size() == 6 &&  //lose checker
             hurdle_state_.GetStatus() != "win") {
           hurdle_state_.SetStatus("lose");
         } else {
