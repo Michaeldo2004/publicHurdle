@@ -1,8 +1,9 @@
-S#include <string>
+#include <algorithm>
+#include <string>
 #include <vector>
 
-#include "hurdlewords.h"
 #include "hurdlestate.h"
+#include "hurdlewords.h"
 #include "server_utils/crow_all.h"
 
 #ifndef HURDLE_H

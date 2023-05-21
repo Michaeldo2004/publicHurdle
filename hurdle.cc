@@ -5,18 +5,19 @@ using std::string;
 void HurdleGame::NewHurdle() {
   std::vector<std::string> empty;
   hurdle_state_.SetHurdle(hurdlewords_.GetRandomHurdle());
-  hurdle_state_.SetGuess("");
+  hurdle_state_.GetGuesses().clear();
   hurdle_state_.SetGuesses(empty);
   hurdle_state_.SetColor(empty);
   hurdle_state_.SetStatus("active");
   hurdle_state_.SetError("");
+  JsonFromHurdleState();
 }
 void HurdleGame::LetterEntered(char key) {
   if(hurdle_state_.isActive()){
     if(hurdle_state_.GetGuesses().size() == 0) {
       hurdle_state_.AddGuess("");
     }
-    if(hurdle_state_.GetGuess().size() <5){
+    if(hurdle_state_.GetGuess().length() <5){
       hurdle_state_.GetGuess() += key;
     }
   }
@@ -55,10 +56,16 @@ void HurdleGame::WordSubmitted() {
   }
 }
 void HurdleGame::LetterDeleted() {
-  if (hurdle_state_.GetGuess().size() >= 1) {
+  hurdle_state_.SetError("");
+  if (hurdle_state_.isActive()){
+  if (hurdle_state_.GetGuess().length() >= 1) {
     hurdle_state_.SetGuess(hurdle_state_.GetGuess().substr(
         0, hurdle_state_.GetGuess().length() - 1));
+  } else {
+    hurdle_state_.SetError("There are no words to delete.");
   }
+}
+  JsonFromHurdleState();
 }
 
 crow::json::wvalue HurdleGame::JsonFromHurdleState() {

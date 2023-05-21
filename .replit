@@ -6,6 +6,8 @@ hidden = [
   ".clang-format", ".clang-tidy", ".gitignore",
 	"Makefile", "compile_flags.txt"
 ]
+entrypoint = "main.cpp"
+compile = "make -s"
 
 [languages.cpp]
 pattern = "**/*.{cc,h}"
@@ -17,3 +19,6 @@ support = true
 
 [nix]
 channel = "stable-22_05"
+
+[gitHubImport]
+requiredFiles = [".replit", "replit.nix", ".ccls-cache"]

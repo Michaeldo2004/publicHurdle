@@ -1,5 +1,6 @@
 #include "hurdlewords.h"
 
+#include <algorithm>
 #include <cstdlib>
 #include <ctime>
 #include <fstream>
@@ -26,10 +27,6 @@ HurdleWords::HurdleWords(const std::string& valid_hurdles_filename,
 }
 
 bool HurdleWords::IsGuessValid(const std::string& word) const {
-  //=================== YOUR CODE HERE ===================
-  // TODO: Return true if the given `word` is considered
-  // a valid guess. If the guess is invalid, return false.
-  //======================================================
   if (std::find(valid_guesses_.begin(), valid_guesses_.end(), word) !=
       valid_guesses_.end()) {
     return true;
@@ -38,7 +35,7 @@ bool HurdleWords::IsGuessValid(const std::string& word) const {
   }
 }
 
-const std::string& Dictionary::GetRandomHurdle() const {
+const std::string &HurdleWords::GetRandomHurdle() const{
   int i = rand() % valid_hurdles_.size();
   return valid_hurdles_.at(i);
 }
