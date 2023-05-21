@@ -15,8 +15,8 @@ void HurdleState::AddColor(const std::string& color) {
   colors_.push_back(color);
 }
 
-void HurdleState::AddGuess(const std::string& guess) {
-  guesses_.push_back(guess);
+void HurdleState::AddGuess(const std::string& guess, int c) {
+  guesses_.at(c) = guess;
   if (guesses_.size() >= 5 && game_status_ != "win" || guesses_.size() < 0) {
     game_status_ = "lose";
   }
