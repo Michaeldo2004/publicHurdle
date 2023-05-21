@@ -51,6 +51,7 @@ void HurdleGame::WordSubmitted() {
           }
         }
         hurdle_state_.AddColor(color);
+        hurdle_state_.AddCounter();
       } else {
         hurdle_state_.SetError("Invalid Word.");
         return;

@@ -7,6 +7,7 @@ HurdleState::HurdleState(const std::string& hurdle) {
   game_status_ = "active";
   colors_ = {};
   error_ = "";
+  counter_ = 0;
 }
 void HurdleState::AddColor(const std::string& color) {
   if (color == "GGGGG") {
