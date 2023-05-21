@@ -57,9 +57,10 @@ void HurdleGame::WordSubmitted() {
         if (color == "GGGGG") {
           hurdle_state_.SetStatus("win");
         }
-        if((hurdle_state_.GetGuesses().size() >= 5 && hurdle_state_.GetStatus() != "win") {
+        if (hurdle_state_.GetGuesses().size() >= 5 &&
+            hurdle_state_.GetStatus() != "win") {
           hurdle_state_.SetStatus("lose");
-        } else{
+        } else {
           hurdle_state_.AddGuess("");
         }
       } else {

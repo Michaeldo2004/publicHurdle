@@ -9,15 +9,9 @@ HurdleState::HurdleState(const std::string& hurdle) {
   error_ = "";
 }
 void HurdleState::AddColor(const std::string& color) {
-  if (color == "GGGGG") {
-    game_status_ = "win";
-  }
   colors_.push_back(color);
 }
 
 void HurdleState::AddGuess(const std::string& guess) {
   guesses_.push_back(guess);
-  if (guesses_.size() >= 5 && game_status_ != "win" || guesses_.size() < 0) {
-    game_status_ = "lose";
-  }
 }
