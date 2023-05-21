@@ -3,7 +3,7 @@
 using std::string;
 
 void HurdleGame::NewHurdle() {
-  std::vector<std::string> empty;
+  std::vector<std::string> empty = {};
   hurdle_state_.SetHurdle(hurdlewords_.GetRandomHurdle());
   hurdle_state_.GetGuesses().clear();
   hurdle_state_.SetGuesses(empty);
@@ -49,9 +49,11 @@ void HurdleGame::WordSubmitted() {
       }
     } else {
       hurdle_state_.SetError("Invalid Word.");
+      return;
     }
   } else {
     hurdle_state_.SetError("Needs more letters!");
+    return;
   }
 
   if (color == "GGGGG") {
