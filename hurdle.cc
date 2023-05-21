@@ -47,8 +47,8 @@ void HurdleGame::WordSubmitted() {
       if (hurdle_state_.GetGuesses().size() == 6) {  // lose checker
         hurdle_state_.SetStatus("lose");
       }
-      if(hurdle_state_.isActive()){
-        hurdle_state_.AddGuess("");  // adds new guess if not 5 guesses yet
+      if (hurdle_state_.isActive()) {
+        hurdle_state_.AddGuess("");  // adds new guess if active
       }
     } else {
       hurdle_state_.SetError("Invalid Word.");
@@ -61,9 +61,13 @@ void HurdleGame::WordSubmitted() {
 }
 void HurdleGame::LetterDeleted() {
   if (hurdle_state_.isActive()) {
-    if (hurdle_state_.GetGuess().length() >= 1) {
-      hurdle_state_.SetGuess(hurdle_state_.GetGuess().substr(
-          0, hurdle_state_.GetGuess().length() - 1));
+    if (hurdle_state_.GetGuesses()
+                .at(hurdle_state_.GetGuesses().size() - 1)
+                .length() >= 1 &&
+        hurdle_state_.GetGuesses().size() < 1) {
+      std::string lastword =
+          hurdle_state_.GetGuesses().at(hurdle_state_.GetGuesses().size() - 1);
+      hurdle_state_.SetGuess(lastword.substr(0, lastword.length() - 1));
     } else {
       hurdle_state_.SetError("There are no words to delete.");
     }
