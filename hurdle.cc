@@ -13,20 +13,26 @@ void HurdleGame::NewHurdle() {
   JsonFromHurdleState();
 }
 void HurdleGame::LetterEntered(char key) {
+  hurdle_state_.SetError("");
   if (hurdle_state_.isActive()) {
     if (hurdle_state_.GetGuesses().size() == 0) {
       hurdle_state_.AddGuess("");
     }
     if (hurdle_state_.GetGuess().length() < 5) {
       hurdle_state_.GetGuess() += key;
+      hurdle_state_.SetError("");
+    } else {
+      hurdle_state_.SetError("Cannot enter letter!");
     }
   }
 }
 
 void HurdleGame::WordSubmitted() {
   std::string color = "";
+  hurdle_state_.SetError("");
   if (hurdle_state_.GetGuess().size() == 5) {
     if (hurdlewords_.IsGuessValid(hurdle_state_.GetGuess())) {
+      hurdle_state_.SetError("");
       hurdle_state_.AddGuess(hurdle_state_.GetGuess());
       for (int i = 0; i < 5; i++) {
         if (hurdle_state_.GetGuess().at(i) == hurdle_state_.GetHurdle().at(i)) {
@@ -61,6 +67,7 @@ void HurdleGame::LetterDeleted() {
     if (hurdle_state_.GetGuess().length() >= 1) {
       hurdle_state_.SetGuess(hurdle_state_.GetGuess().substr(
           0, hurdle_state_.GetGuess().length() - 1));
+      hurdle_state_.SetError("");
     } else {
       hurdle_state_.SetError("There are no words to delete.");
     }
