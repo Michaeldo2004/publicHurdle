@@ -37,35 +37,9 @@ void HurdleGame::LetterEntered(char key) {
   }
 }
 
-/* void HurdleGame::WordSubmitted() {
-  std::vector<std::string> wordlist = hurdle_state_.GetGuesses();
-  if (!hurdle_state_.isActive()) {
-    return;
-  }
-  hurdle_state_.SetError("");
-  int index = wordlist.size() - 1;
-  if (wordlist.at(index).size() < 5) {  //exits if too small word
-    hurdle_state_.SetError("Needs more letters!");
-    return;
-  } else if (!hurdlewords_.IsGuessValid(wordlist.at(index))) { //exits if
-  invalid hurdle_state_.SetError("Invalid Word."); return;
-  }
-   std::string color = ColorCheck(wordlist.at(index),
-  hurdle_state_.GetHurdle()); hurdle_state_.GetColor().push_back(color);  //
-  adds color to colorboard
-
-    if (color == "GGGGG") {                     // winchecker
-      hurdle_state_.SetStatus("win");
-    } else if (wordlist.size() == 6) {  // lose checker
-      hurdle_state_.SetStatus("lose");
-    }
-    if (hurdle_state_.isActive()) {
-      hurdle_state_.AddGuess("");  // adds new guess if active
-    }
-  } */
 
 void HurdleGame::WordSubmitted() {
-  std::vector<std::string>& all_guesses_ = hurdle_state_.GetGuesses();
+  std::vector<std::string>& list = hurdle_state_.GetGuesses();
   // no guessed words, OR, game is not running
   if (hurdle_state_.inActive()) {
     return;  // return nothing
@@ -73,8 +47,8 @@ void HurdleGame::WordSubmitted() {
   // clear errors
   hurdle_state_.SetError("");
   // create index to track which guess is current
-  int guess_index = all_guesses_.size() - 1;
-  std::string guess = all_guesses_.at(guess_index);
+  int index = list.size() - 1;
+  std::string guess = list.at(index);
   // check for errors with the current guess
   if (guess.length() < 5) {
     hurdle_state_.SetError("Word is too short");
@@ -89,12 +63,13 @@ void HurdleGame::WordSubmitted() {
   hurdle_state_.GetColor().push_back(colors);
   if (colors == "GGGGG") {
     hurdle_state_.SetStatus("win");
-  } else if (all_guesses_.size() == 6) {
+  } else if (list.size() == 6) {
     hurdle_state_.SetStatus("lose");
   }
+  
   // add empty guess if game is active
   if (!hurdle_state_.inActive()) {
-    all_guesses_.push_back("");
+    list.push_back("");
   }
 }
 
@@ -103,13 +78,14 @@ void HurdleGame::LetterDeleted() {
     return;
   }
   std::string guess = hurdle_state_.GetGuesses()[hurdle_state_.GetGuesses().size() - 1];
-    if ((guess.length()) >= 1) {
-      hurdle_state_.GetGuesses()[hurdle_state_.GetGuesses().size() - 1] = 
-          guess.substr(0, guess.length() - 2);
-    } else {
-      hurdle_state_.SetError("No words to delete");
-      return;
-    }
+  if (guess.length() == 0) {
+    hurdle_state_.SetError("Your word is empty!");
+    return;
+  } else {
+    guess.pop_back();
+    hurdle_state_.GetGuesses()[hurdle_state_.GetGuesses().size() - 1] = guess;
+
+  }
 }
 
 crow::json::wvalue HurdleGame::JsonFromHurdleState() {
