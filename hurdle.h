@@ -22,6 +22,7 @@ class HurdleGame {
   void WordSubmitted();
   // Called by the Hurdle frontend when the presses backspace.
   void LetterDeleted();
+  std::string ColorCheck(const std::string& guess, const std::string& answer);
   // JsonFromHurdleState returns a JSON object representing the Hurdle state.
   // This is used to send the game state to the Hurdle Frontend in a readable
   // format.
