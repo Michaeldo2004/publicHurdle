@@ -48,11 +48,11 @@ void HurdleGame::WordSubmitted() {
   int index = list.size() - 1;  // too azy to write it all out
   std::string guess = list.at(index);
   if (guess.length() < 5) {  // lengthchecker
-    hurdle_state_.SetError("Word is too short");
+    hurdle_state_.SetError("short word");
     return;
   } else if (!hurdlewords_.IsGuessValid(
                  guess)) {  // valid word or not else error
-    hurdle_state_.SetError("Invalid Word");
+    hurdle_state_.SetError("invalid word");
     return;
   }
   // assign colors
@@ -78,7 +78,7 @@ void HurdleGame::LetterDeleted() {
       hurdle_state_.GetGuesses()[hurdle_state_.GetGuesses().size() -
                                  1];  // create guess to not type it all out
   if (guess.length() == 0) {          // word checker
-    hurdle_state_.SetError("Your word is empty!");
+    hurdle_state_.SetError("empty word");
     return;
   } else {
     guess.pop_back();  // take out last word
