@@ -2,89 +2,88 @@
 
 using std::string;
 
-std::string HurdleGame::ColorCheck(
-    const std::string& guess,
-    const std::string& answer) {  // returns the colors to put onto the board
-  std::string colors = "BBBBB";
+std::string HurdleGame::ColorCheck(const std::string& guess,
+                                   const std::string& hurd) {
+  std::string colorsString = "BBBBB";  // default as BBBBB then changed
   for (int i = 0; i < 5; i++) {
-    if (guess[i] == answer[i]) {
-      colors[i] = 'G';
-    } else if (std::find(answer.begin(), answer.end(), guess.at(i)) !=
-               answer.end()) {
-      colors[i] = 'Y';
+    if (guess[i] == hurd[i]) {  // check if equal
+      colorsString[i] = 'G';
+    } else if (std::find(hurd.begin(), hurd.end(),
+                         hurd.at(i)) !=  // if it exists then Y
+               hurd.end()) {
+      colorsString[i] = 'Y';
     }
   }
-  return colors;
+  return colorsString;
 }
 void HurdleGame::NewHurdle() {
-  hurdle_state_ = HurdleState(hurdlewords_.GetRandomHurdle());
+  hurdle_state_ = HurdleState(
+      hurdlewords_.GetRandomHurdle());  // creates new hurdlestateobject
+                                        // (already cleaned)
 }
 
 void HurdleGame::LetterEntered(char key) {
-   if (hurdle_state_.inActive()) {
+  if (hurdle_state_.inActive()) {  // game not on ->dont run
     return;
   }
-  hurdle_state_.SetError("");
-  std::vector<std::string>& guessed_hurdles_ = hurdle_state_.GetGuesses();
-  if (guessed_hurdles_.size() == 0) {
-    guessed_hurdles_.push_back("");
+  hurdle_state_.SetError("");  // errorclean
+  std::vector<std::string>& guesslist = hurdle_state_.GetGuesses();
+  if (guesslist.size() == 0) {  // empty vector -> make space for key
+    guesslist.push_back("");
   }
-  int guess_index_ = guessed_hurdles_.size() - 1;
-  std::string guess = guessed_hurdles_[guess_index_];
+  int index = guesslist.size() - 1;  // too lazy so index
+  std::string guess = guesslist[index];
 
   if (guess.length() != 5) {
-    guessed_hurdles_[guess_index_] = guess + key;
+    guesslist[index] = guess + key;  // concatenation bc not 5
   }
 }
 
-
 void HurdleGame::WordSubmitted() {
   std::vector<std::string>& list = hurdle_state_.GetGuesses();
-  // no guessed words, OR, game is not running
   if (hurdle_state_.inActive()) {
-    return;  // return nothing
+    return;  // stop running
   }
-  // clear errors
   hurdle_state_.SetError("");
-  // create index to track which guess is current
-  int index = list.size() - 1;
+  int index = list.size() - 1;  // too azy to write it all out
   std::string guess = list.at(index);
-  // check for errors with the current guess
-  if (guess.length() < 5) {
+  if (guess.length() < 5) {  // lengthchecker
     hurdle_state_.SetError("Word is too short");
     return;
   } else if (!hurdlewords_.IsGuessValid(
-                 guess)) {  // error somewhere with these three lines
+                 guess)) {  // valid word or not else error
     hurdle_state_.SetError("Invalid Word");
     return;
   }
   // assign colors
-  std::string colors = ColorCheck(guess, hurdle_state_.GetHurdle());
-  hurdle_state_.GetColor().push_back(colors);
-  if (colors == "GGGGG") {
+  std::string colors =
+      ColorCheck(guess, hurdle_state_.GetHurdle());  // gets 5string color
+  hurdle_state_.GetColor().push_back(colors);        // push to colorboard
+  if (colors == "GGGGG") {                           // winchecker
     hurdle_state_.SetStatus("win");
   } else if (list.size() == 6) {
-    hurdle_state_.SetStatus("lose");
+    hurdle_state_.SetStatus("lose");  // losechecker
   }
-  
-  // add empty guess if game is active
-  if (!hurdle_state_.inActive()) {
+
+  if (!hurdle_state_.inActive()) {  // make space for next word
     list.push_back("");
   }
 }
 
 void HurdleGame::LetterDeleted() {
-  if (hurdle_state_.inActive()) {  // inactive or empty then fails
+  if (hurdle_state_.inActive()) {  // game end so no run
     return;
   }
-  std::string guess = hurdle_state_.GetGuesses()[hurdle_state_.GetGuesses().size() - 1];
-  if (guess.length() == 0) {
+  std::string guess =
+      hurdle_state_.GetGuesses()[hurdle_state_.GetGuesses().size() -
+                                 1];  // create guess to not type it all out
+  if (guess.length() == 0) {          // word checker
     hurdle_state_.SetError("Your word is empty!");
     return;
   } else {
-    guess.pop_back();
-    hurdle_state_.GetGuesses()[hurdle_state_.GetGuesses().size() - 1] = guess;
-
+    guess.pop_back();  // take out last word
+    hurdle_state_.GetGuesses()[hurdle_state_.GetGuesses().size() - 1] =
+        guess;  // replace it put it aback in
   }
 }
 
